@@ -32,6 +32,7 @@ runs:
     - uses: hashicorp/setup-terraform@v2
     - id: terraform
       run: |
+        cd terraform
         $Repo = "${{ github.repository }}"
         $BaseUri = "https://api.github.com"
         $ArtifactUri = "$BaseUri/repos/$Repo/actions/artifacts"
@@ -46,7 +47,6 @@ runs:
             openssl enc -d -in ./state/terraform.tfstate.enc -aes-256-cbc -pbkdf2 -pass pass:"${{ inputs.encryptionkey }}" -out ./terraform.tfstate
           }
         }
-        cd terraform
         terraform init
         $terraformapply = "${{ inputs.apply }}"
         $terraformdestroy = "${{ inputs.destroy }}"
@@ -66,15 +66,15 @@ runs:
         if ($terraformdestroy){
           terraform apply -destroy -auto-approve $custom_destroy_flags
         }
-        $StateExists = Test-Path -Path ./terraform/terraform.tfstate -PathType Leaf
+        $StateExists = Test-Path -Path ./terraform.tfstate -PathType Leaf
         if ($StateExists){
-          openssl enc -in ./terraform/terraform.tfstate -aes-256-cbc -pbkdf2 -pass pass:"${{ inputs.encryptionkey }}" -out ./terraform/terraform.tfstate.enc
+          openssl enc -in ./terraform.tfstate -aes-256-cbc -pbkdf2 -pass pass:"${{ inputs.encryptionkey }}" -out ./terraform.tfstate.enc
         }
       shell: pwsh
     - uses: actions/upload-artifact@v2
       with:
         name: terraformstatefile
-        path: ./terraform/terraform.tfstate.enc
+        path: ./terraform.tfstate.enc
 branding:
   icon: 'cloud'
   color: 'gray-dark'
