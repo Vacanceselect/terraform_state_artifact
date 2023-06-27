@@ -9,12 +9,20 @@ inputs:
     description: 'terraform apply'
     required: false
     default: true
+  destroy:
+    description: 'terraform destroy'
+    required: false
+    default: false
   custom_plan_flags:
     description: 'Add custom flags to the terraform plan command'
     required: false
     default: ''
   custom_apply_flags:
     description: 'Add custom flags to the terraform apply command'
+    required: false
+    default: ''
+  custom_destroy_flags:
+    description: 'Add custom flags to the terraform apply -destroy command'
     required: false
     default: ''
 runs:
