@@ -38,16 +38,25 @@ runs:
             openssl enc -d -in ./state/terraform.tfstate.enc -aes-256-cbc -pbkdf2 -pass pass:"${{ inputs.encryptionkey }}" -out ./terraform.tfstate
           }
         }
+        cd terraform
         terraform init
         $terraformapply = "${{ inputs.apply }}"
+        $terraformdestroy = "${{ inputs.destroy }}"
         $custom_plan_flags = "${{ inputs.custom_plan_flags }}"
         $custom_apply_flags = "${{ inputs.custom_apply_flags }}"
+        $custom_destroy_flags = "${{ inputs.custom_destroy_flags }}"
         if ($terraformapply -eq "false"){
           $terraformapply = $false
+        }
+        if ($terraformdestroy -eq "false"){
+          $terraformdestroy = $false
         }
         terraform plan $custom_plan_flags
         if ($terraformapply){
           terraform apply -auto-approve $custom_apply_flags
+        }
+        if ($terraformdestroy){
+          terraform apply -destroy -auto-approve $custom_destroy_flags
         }
         $StateExists = Test-Path -Path ./terraform.tfstate -PathType Leaf
         if ($StateExists){
