@@ -25,6 +25,9 @@ inputs:
     description: 'Add custom flags to the terraform apply -destroy command'
     required: false
     default: ''
+  environment:
+    description: 'Add environment'
+    required: true
 runs:
   using: "composite"
   steps:
@@ -57,16 +60,16 @@ runs:
         if ($terraformdestroy -eq "false"){
           $terraformdestroy = $false
         }
-        terraform plan $custom_plan_flags
+        terraform plan $custom_plan_flags -var-file=environments/${{ inputs.environment }}/main.tfvars
         if ($terraformapply){
-          terraform apply -auto-approve $custom_apply_flags
+          terraform apply -auto-approve $custom_apply_flags -var-file=environments/${{ inputs.environment }}/main.tfvars
 
           if ($LastExitCode -eq 1){
             exit 1
           }
         }
         if ($terraformdestroy){
-          terraform apply -destroy -auto-approve $custom_destroy_flags
+          terraform apply -destroy -auto-approve $custom_destroy_flags -var-file=environments/${{ inputs.environment }}/main.tfvars
 
           if ($LastExitCode -eq 1){
             exit 1
