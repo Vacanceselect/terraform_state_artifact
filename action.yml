@@ -48,6 +48,9 @@ runs:
             openssl enc -d -in ./state/terraform.tfstate.enc -aes-256-cbc -pbkdf2 -pass pass:"${{ inputs.encryptionkey }}" -out ./terraform.tfstate
           }
         }
+
+        Get-Location
+        Get-ChildItem
         terraform init
         $environment = "${{ inputs.environment }}"
         $terraformapply = "${{ inputs.apply }}"
