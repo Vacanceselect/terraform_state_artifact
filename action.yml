@@ -28,19 +28,24 @@ inputs:
   environment:
     description: 'Add environment'
     required: true
+  terraformstatefile:
+    description: 'Terraformstatefile name'
+    required: true
 runs:
   using: "composite"
   steps:
     - uses: hashicorp/setup-terraform@v3
     - id: terraform
       run: |
+        $environment = "${{ inputs.environment }}"
+        $terraformstatefile = "${{ inputs.terraformstatefile }}"
         $Repo = "${{ github.repository }}"
         $BaseUri = "https://api.github.com"
         $ArtifactUri = "$BaseUri/repos/$Repo/actions/artifacts"
         $Token = "${{ github.token }}" | ConvertTo-SecureString -AsPlainText
         $RestResponse = Invoke-RestMethod -Authentication Bearer -Uri $ArtifactUri -Token $Token | Select-Object -ExpandProperty artifacts
         if ($RestResponse){
-          $MostRecentArtifactURI = $RestResponse | Sort-Object -Property created_at -Descending | where name -eq "terraformstatefile" | Select-Object -First 1 | Select-Object -ExpandProperty archive_download_url
+          $MostRecentArtifactURI = $RestResponse | Sort-Object -Property created_at -Descending | where name -eq $terraformstatefile | Select-Object -First 1 | Select-Object -ExpandProperty archive_download_url
           Write-Host "Most recent artifact URI = $MostRecentArtifactURI"
           if ($MostRecentArtifactURI){
             Invoke-RestMethod -uri $MostRecentArtifactURI -Token $Token -Authentication bearer -outfile ./state.zip
@@ -51,7 +56,6 @@ runs:
 
         terraform init
         $path = "./environments/${{ inputs.environment }}/main.tfvars"
-        $environment = "${{ inputs.environment }}"
         Write-Host "Use tfvars file = $path for environment $environment"
         $terraformapply = "${{ inputs.apply }}"
         $terraformdestroy = "${{ inputs.destroy }}"
@@ -86,7 +90,7 @@ runs:
       shell: pwsh
     - uses: actions/upload-artifact@v4
       with:
-        name: terraformstatefile
+        name: ${{ inputs.terraformstatefile }}
         path: ./terraform.tfstate.enc
 branding:
   icon: 'cloud'
