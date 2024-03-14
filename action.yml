@@ -52,20 +52,13 @@ runs:
         $Env:TF_LOG="TRACE"
         terraform init
         $workspace = "${{ github.workspace }}"
-        Write-Host "TERRAFORM_CLI_PATH => $Env:TERRAFORM_CLI_PATH"
-        $path = "$Env:TERRAFORM_CLI_PATH/environments/${{ inputs.environment }}/main.tfvars"
-        $rootpath1 = "$Env:TERRAFORM_CLI_PATH/terraform"
-        $rootpath2 = "$Env:TERRAFORM_CLI_PATH/terraform-bin"
+        $path = "$workspace/environments/${{ inputs.environment }}/main.tfvars"
         Write-Host "Path => $path"
         if (Test-Path -path $path -PathType Leaf) {
           Write-Host "File present"
         } else {
           Write-Host "File NOT present"
         }
-        Get-ChildItem -Path $rootpath1 -Recurse
-        Get-ChildItem -Path $rootpath2 -Recurse
-        #$path = "$workspace/environments/${{ inputs.environment }}/main.tfvars"
-        #Write-Host "Path => $path"
         $environment = "${{ inputs.environment }}"
         $terraformapply = "${{ inputs.apply }}"
         $terraformdestroy = "${{ inputs.destroy }}"
