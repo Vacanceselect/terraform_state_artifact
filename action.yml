@@ -61,17 +61,16 @@ runs:
         if ($terraformdestroy -eq "false"){
           $terraformdestroy = $false
         }
-        Write-Host "TFVARS = environments/$environment/main.tfvars"
-        terraform plan $custom_plan_flags -var-file=environments/$environment/main.tfvars
+        terraform plan $custom_plan_flags -var-file=./environments/$environment/main.tfvars
         if ($terraformapply){
-          terraform apply -auto-approve $custom_apply_flags -var-file=environments/$environment/main.tfvars
+          terraform apply -auto-approve $custom_apply_flags -var-file=./environments/$environment/main.tfvars
 
           if ($LastExitCode -eq 1){
             exit 1
           }
         }
         if ($terraformdestroy){
-          terraform apply -destroy -auto-approve $custom_destroy_flags -var-file=environments/$environment/main.tfvars
+          terraform apply -destroy -auto-approve $custom_destroy_flags -var-file=./environments/$environment/main.tfvars
 
           if ($LastExitCode -eq 1){
             exit 1
