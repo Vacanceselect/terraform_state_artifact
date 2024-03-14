@@ -51,7 +51,8 @@ runs:
 
         terraform init
         $workspace = "${{ github.workspace }}"
-        $path = "$workspace/environments/${{ inputs.environment }}/main.tfvars"
+        Write-Host "TERRAFORM_CLI_PATH => $Env:TERRAFORM_CLI_PATH"
+        $path = "$Env:TERRAFORM_CLI_PATH/${{ inputs.environment }}/main.tfvars"
         $environment = "${{ inputs.environment }}"
         $terraformapply = "${{ inputs.apply }}"
         $terraformdestroy = "${{ inputs.destroy }}"
