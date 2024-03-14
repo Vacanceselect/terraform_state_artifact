@@ -54,9 +54,21 @@ runs:
         $environment = "${{ inputs.environment }}"
         $terraformapply = "${{ inputs.apply }}"
         $terraformdestroy = "${{ inputs.destroy }}"
-        $custom_plan_flags = "-var-file=$path ${{ inputs.custom_plan_flags }}".Trim()
-        $custom_apply_flags = "-var-file=$path ${{ inputs.custom_plan_flags }}".Trim()
-        $custom_destroy_flags = "-var-file=$path ${{ inputs.custom_plan_flags }}".Trim()
+        if (inputs.custom_plan_flags eq ''){
+          $custom_plan_flags = "-var-file=$path"
+        else {
+          $custom_plan_flags = "${{ inputs.custom_plan_flags }} -var-file=$path"
+        }
+        if (inputs.custom_apply_flags eq ''){
+          $custom_apply_flags = "-var-file=$path".Trim()
+        } else {
+          $custom_apply_flags = "${{ inputs.custom_apply_flags }} -var-file=$path"
+        } 
+        if (inputs.custom_destroy_flags eq ''){
+          $custom_destroy_flags = "-var-file=$path"
+        } else {
+          $custom_destroy_flags = "${{ inputs.custom_destroy_flags }} -var-file=$path"
+        }
         if ($terraformapply -eq "false"){
           $terraformapply = $false
         }
