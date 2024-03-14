@@ -39,6 +39,7 @@ runs:
       run: |
         $environment = "${{ inputs.environment }}"
         $terraformstatefile = "${{ inputs.terraformstatefile }}"
+        Write-Host "Use terraformstatefile = $terraformstatefile"
         $Repo = "${{ github.repository }}"
         $BaseUri = "https://api.github.com"
         $ArtifactUri = "$BaseUri/repos/$Repo/actions/artifacts"
