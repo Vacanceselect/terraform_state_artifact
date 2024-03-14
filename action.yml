@@ -52,9 +52,14 @@ runs:
         #Get-Location
         #Get-ChildItem
         terraform init
-        $path = "${{ github.path }}"
-        $env = "${{ github.env }}"
-        Write-Host "Path: $path, env: $env"
+        $workspace = "${{ github.workspace }}"
+        $path = "$workspace/environments/${{ inputs.environment }}/main.tfvars"
+        Write-Host "Workspace: $workspace, path: $path"
+        if (Test-Path -path $path -PathType Leaf){
+          Write-Host "File exist"
+        } else {
+          Write-Host "File does NOT exist"
+        }
         $environment = "${{ inputs.environment }}"
         $terraformapply = "${{ inputs.apply }}"
         $terraformdestroy = "${{ inputs.destroy }}"
