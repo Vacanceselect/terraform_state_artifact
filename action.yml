@@ -49,9 +49,12 @@ runs:
           }
         }
 
-        Get-Location
-        Get-ChildItem
+        #Get-Location
+        #Get-ChildItem
         terraform init
+        $path = "${{ github.path }}"
+        $env = "${{ github.env }}"
+        Write-Host "Path: $path, env: $env"
         $environment = "${{ inputs.environment }}"
         $terraformapply = "${{ inputs.apply }}"
         $terraformdestroy = "${{ inputs.destroy }}"
