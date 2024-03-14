@@ -52,6 +52,7 @@ runs:
         terraform init
         $path = "./environments/${{ inputs.environment }}/main.tfvars"
         $environment = "${{ inputs.environment }}"
+        Write-Host "Use tfvars file = $path for environment $environment"
         $terraformapply = "${{ inputs.apply }}"
         $terraformdestroy = "${{ inputs.destroy }}"
         $custom_plan_flags = "${{ inputs.custom_plan_flags }}"
