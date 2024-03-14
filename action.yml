@@ -56,7 +56,7 @@ runs:
         $terraformdestroy = "${{ inputs.destroy }}"
         if (inputs.custom_plan_flags eq ''){
           $custom_plan_flags = "-var-file=$path"
-        else {
+        } else {
           $custom_plan_flags = "${{ inputs.custom_plan_flags }} -var-file=$path"
         }
         if (inputs.custom_apply_flags eq ''){
