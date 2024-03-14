@@ -49,7 +49,7 @@ runs:
           }
         }
 
-        $Env:TF_LOG="TRACE"
+        #$Env:TF_LOG="TRACE"
         terraform init
         $workspace = "${{ github.workspace }}"
         $path = "$workspace/environments/${{ inputs.environment }}/main.tfvars"
@@ -59,7 +59,7 @@ runs:
         } else {
           Write-Host "File NOT present"
         }
-        $path = "main.tfvars"
+        $path = "/environments/${{ inputs.environment }}/main.tfvars"
         $environment = "${{ inputs.environment }}"
         $terraformapply = "${{ inputs.apply }}"
         $terraformdestroy = "${{ inputs.destroy }}"
