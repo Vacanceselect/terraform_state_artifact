@@ -63,8 +63,8 @@ runs:
         if ($terraformdestroy -eq "false"){
           $terraformdestroy = $false
         }
-        terraform plan -var-file="$path'
-        terraform plan -var-file="$path' $custom_plan_flags
+        terraform plan -var-file="$path"
+        terraform plan -var-file="$path" $custom_plan_flags
         if ($terraformapply){
           terraform apply -auto-approve -var-file="'$path'" $custom_apply_flags
 
