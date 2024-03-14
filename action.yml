@@ -59,7 +59,7 @@ runs:
         } else {
           Write-Host "File NOT present"
         }
-        $path = "/environments/${{ inputs.environment }}/main.tfvars"
+        $path = "./environments/${{ inputs.environment }}/main.tfvars"
         $environment = "${{ inputs.environment }}"
         $terraformapply = "${{ inputs.apply }}"
         $terraformdestroy = "${{ inputs.destroy }}"
