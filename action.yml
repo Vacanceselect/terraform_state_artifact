@@ -49,6 +49,7 @@ runs:
           }
         }
 
+        $Env:TF_LOG=trace
         terraform init
         $workspace = "${{ github.workspace }}"
         Write-Host "TERRAFORM_CLI_PATH => $Env:TERRAFORM_CLI_PATH"
