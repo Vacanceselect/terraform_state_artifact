@@ -102,8 +102,8 @@ runs:
         name: ${{ inputs.terraformstatefile }}
         path: ./terraform.tfstate.enc
     - name: Check on failures
-            if: steps.terraform.conclusion == 'failure'
-            run: exit 1
+      if: steps.terraform.conclusion == 'failure'
+      run: exit 1
 branding:
   icon: 'cloud'
   color: 'gray-dark'
