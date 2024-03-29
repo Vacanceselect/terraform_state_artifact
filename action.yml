@@ -102,7 +102,7 @@ runs:
         name: ${{ inputs.terraformstatefile }}
         path: ./terraform.tfstate.enc
     - name: Check on failures
-      if: steps.terraform.conclusion == 'failure'
+      if: steps.terraform.outcome != 'success'
       run: exit 1
       shell: pwsh
 branding:
