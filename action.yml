@@ -80,7 +80,6 @@ runs:
           }
 
           if ($ExitCode -eq 1){
-            echo ::set-output name=status::failure
             exit 1
           }
         }
@@ -94,11 +93,9 @@ runs:
           }
 
           if ($ExitCode -eq 1){
-            echo ::set-output name=status::failure
             exit 1
           }
         }
-        echo ::set-output name=status::success
       shell: pwsh
     - name: Archive artifacts
       if: success() || failure()
@@ -106,10 +103,6 @@ runs:
       with:
         name: ${{ inputs.terraformstatefile }}
         path: ./terraform.tfstate.enc
-    - name: Check on failures
-      if: steps.terraform.outputs.status == 'failure'
-      run: exit 1
-      shell: pwsh
 branding:
   icon: 'cloud'
   color: 'gray-dark'
