@@ -73,12 +73,13 @@ runs:
         if ($terraformapply){
           terraform apply -auto-approve -var-file="$path" $custom_apply_flags
 
+          $ExitCode = $LastExitCode
           $StateExists = Test-Path -Path ./terraform.tfstate -PathType Leaf
           if ($StateExists){
             openssl enc -in ./terraform.tfstate -aes-256-cbc -pbkdf2 -pass pass:"${{ inputs.encryptionkey }}" -out ./terraform.tfstate.enc
           }
 
-          if ($LastExitCode -eq 1){
+          if ($ExitCode -eq 1){
             echo ::set-output name=status::failure
             exit 1
           }
@@ -86,12 +87,13 @@ runs:
         if ($terraformdestroy){
           terraform apply -destroy -auto-approve -var-file="$path" $custom_destroy_flags
 
+          $ExitCode = $LastExitCode
           $StateExists = Test-Path -Path ./terraform.tfstate -PathType Leaf
           if ($StateExists){
             openssl enc -in ./terraform.tfstate -aes-256-cbc -pbkdf2 -pass pass:"${{ inputs.encryptionkey }}" -out ./terraform.tfstate.enc
           }
 
-          if ($LastExitCode -eq 1){
+          if ($ExitCode -eq 1){
             echo ::set-output name=status::failure
             exit 1
           }
