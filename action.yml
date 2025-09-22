@@ -42,7 +42,7 @@ runs:
         Write-Host "Use terraformstatefile = $terraformstatefile"
         $Repo = "${{ github.repository }}"
         $BaseUri = "https://api.github.com"
-        $ArtifactUri = "$BaseUri/repos/$Repo/actions/artifacts"
+        $ArtifactUri = "$BaseUri/repos/$Repo/actions/artifacts?name=$terraformstatefile&per_page=10"
         $Token = "${{ github.token }}" | ConvertTo-SecureString -AsPlainText
         $RestResponse = Invoke-RestMethod -Authentication Bearer -Uri $ArtifactUri -Token $Token | Select-Object -ExpandProperty artifacts
         if ($RestResponse){
